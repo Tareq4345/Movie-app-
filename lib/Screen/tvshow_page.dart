@@ -94,6 +94,7 @@ class _TvShowPageState extends State<TvShowPage> with TickerProviderStateMixin {
                             onTap: () {
                               Get.to(
                                   DetailsPage(
+                               
                                     description: data.overview.toString(),
                                     tittle: data.originalName.toString(),
                                     rating:
@@ -138,9 +139,12 @@ class _TvShowPageState extends State<TvShowPage> with TickerProviderStateMixin {
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   controller: tabController,
+                  // indicatorPadding: EdgeInsets.zero,
+                  labelPadding:  EdgeInsets.symmetric(horizontal: 25.w),
                   tabAlignment: TabAlignment.start,
                   dragStartBehavior: DragStartBehavior.down,
                   isScrollable: true,
+                 
                   tabs: [
                     Tab(
                       child: CustomText(
@@ -149,6 +153,7 @@ class _TvShowPageState extends State<TvShowPage> with TickerProviderStateMixin {
                           fontWeight: FontWeight.w500,
                           size: 14.sp),
                     ),
+                    
                     Tab(
                       child: CustomText(
                           text: 'Top Rated',

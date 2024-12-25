@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:movie_app/Constant/const.dart';
+import 'package:movie_app/Controller/detail_controller.dart';
 import 'package:movie_app/Custom%20Widget/custom_card.dart';
 import 'package:movie_app/Custom%20Widget/custom_card2.dart';
 import 'package:movie_app/Custom%20Widget/custom_text.dart';
 import 'package:movie_app/Screen/details_page.dart';
 import 'package:movie_app/Service/api_service.dart';
+import 'package:movie_app/drawers/profile_drawer.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -18,6 +20,10 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
+  void displayEndDrawer(BuildContext context) {
+    Scaffold.of(context).openEndDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     final background = Theme.of(context).colorScheme.surface;
@@ -26,6 +32,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     final card = Theme.of(context).colorScheme.onPrimary;
     TabController tabController = TabController(length: 3, vsync: this);
     final apiController = Get.put(ApiService());
+    final movieDetailController = Get.put(DetailController());
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
@@ -38,23 +45,30 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             size: 18.sp),
         centerTitle: true,
         leading: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.menu_rounded,
-              color: text.withOpacity(0.6),
-            )),
+          onPressed: () {},
+          icon: CircleAvatar(
+            radius: 16.r,
+            backgroundColor: text,
+            backgroundImage: const AssetImage('assets/images/netflix.png'),
+          ),
+        ),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded)),
-          IconButton(
-            onPressed: () {},
-            icon: CircleAvatar(
-              radius: 16.r,
-              backgroundColor: text,
-              backgroundImage: const AssetImage('assets/images/men.jpg'),
-            ),
-          ),
+          Builder(builder: (context) {
+            return IconButton(
+              onPressed: () {
+                displayEndDrawer(context);
+              },
+              icon: CircleAvatar(
+                radius: 16.r,
+                backgroundColor: text,
+                backgroundImage: const AssetImage('assets/images/men.jpg'),
+              ),
+            );
+          }),
         ],
       ),
+      endDrawer: const ProfileDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
@@ -90,10 +104,15 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         itemCount: snapshot.data!.results!.length,
                         itemBuilder: (context, index, realIndex) {
                           var data = snapshot.data!.results![index];
+
                           return CustomCard(
                             onTap: () {
+                              movieDetailController.getMovieDetail(
+                                  int.tryParse(data.id.toString()) ?? 0);
                               Get.to(
                                   DetailsPage(
+                                    detailController: movieDetailController,
+                                    relaseDate: data.releaseDate ?? '',
                                     description: data.overview.toString(),
                                     tittle: data.title.toString(),
                                     rating:
@@ -131,6 +150,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             Card(
               color: card,
               child: TabBar(
+                  padding: EdgeInsets.zero,
                   dividerColor: background,
                   indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.r),
@@ -138,6 +158,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   controller: tabController,
+                  labelPadding: EdgeInsets.symmetric(horizontal: 22.w),
                   tabAlignment: TabAlignment.start,
                   dragStartBehavior: DragStartBehavior.down,
                   isScrollable: true,
@@ -187,8 +208,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           var data = snapshot.data!.results![index];
                           return CustomCard2(
                             onTap: () {
+                              movieDetailController.getMovieDetail(
+                                  int.tryParse(data.id.toString()) ?? 0);
                               Get.to(
                                   DetailsPage(
+                                    detailController: movieDetailController,
+                                    relaseDate: data.releaseDate ?? '',
                                     description: data.overview.toString(),
                                     tittle: data.title.toString(),
                                     rating:
@@ -231,6 +256,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             onTap: () {
                               Get.to(
                                   DetailsPage(
+                                    detailController: movieDetailController,
+                                    relaseDate: data.releaseDate ?? '',
                                     description: data.overview.toString(),
                                     tittle: data.title.toString(),
                                     rating:
@@ -269,10 +296,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                 crossAxisCount: 3),
                         itemBuilder: (context, index) {
                           var data = snapshot.data!.results![index];
+
                           return CustomCard2(
                             onTap: () {
                               Get.to(
                                   DetailsPage(
+                                    detailController: movieDetailController,
+                                    relaseDate: data.releaseDate ?? '',
                                     description: data.overview.toString(),
                                     tittle: data.title.toString(),
                                     rating:

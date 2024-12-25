@@ -21,11 +21,10 @@ class BottomNavBar extends StatelessWidget {
           backgroundColor: card,
           color: text,
           activeColor: button,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           style: GnavStyle.google,
           curve: Curves.linear,
           hoverColor: text.withOpacity(0.5),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 20),
           haptic: true,
           onTabChange: (value) {
             navController.isTab.value = value;
@@ -41,10 +40,6 @@ class BottomNavBar extends StatelessWidget {
             GButton(
               icon: Icons.tv_outlined,
               text: ' Tv Show',
-            ),
-            GButton(
-              icon: Icons.manage_accounts_rounded,
-              text: ' Account',
             ),
           ]),
     );

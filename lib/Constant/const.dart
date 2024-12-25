@@ -8,4 +8,6 @@ class Constant {
   final baseurl = 'https://api.themoviedb.org/3/movie/';
   final apiKey = '?api_key=98a009235bc6ca303df7c782c158fd6a';
   final baseurltv = 'https://api.themoviedb.org/3/tv/';
+  static String movieDetailsUrl(int id) =>
+      'https://api.themoviedb.org/3/movie/$id?language=en-US';
 }

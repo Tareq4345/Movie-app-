@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) => GetMaterialApp(
         title: 'Movie App',
-        theme: ThemeProperties().lightTheme,
-        darkTheme: ThemeProperties().darkTheme,
+        theme: ThemeProperties().darkTheme,
+        // darkTheme: ThemeProperties().darkTheme,
         debugShowCheckedModeBanner: false,
         home: const Splash(),
       ),
